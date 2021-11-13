@@ -1,3 +1,4 @@
+import time
 import pygame
 from Pieces.Pawn import Pawn
 from board import Board
@@ -12,28 +13,25 @@ def initWindow(width, height, title, color):
 
     return screen
 
-# places all the chess pieces on the board
-def initChessPieces(board: Board):
-    width = len(board.matrix[0])
-
-    for x in range(width):
-        pawn = Pawn("black", board.matrix, pos=(x, 1))
-        board.setChessPiece(pawn, 1, x)
-
-    for x in range(width):
-        pawn = Pawn("white", board.matrix, pos=(x, 6))
-        board.setChessPiece(pawn, 6, x)
 
 # main function
 def main():
+    # game variables
     width, height, title = 800, 600, "Chess"
     background_color = (255, 255, 255)
-    gameBoard = Board(8, 8)
-    initChessPieces(gameBoard)
-
-    screen = initWindow(width, height, title, background_color)
-    gameBoard.drawGrid(screen)
-    gameBoard.drawPieces(screen)
+    squareLength = 70
+    squareColor = (111, 73, 73)
+    mouseCol, mouseRow = 0, 0
+    selectedSquare = None
+    
+    # initialize game window
+    screen = initWindow(width, height, title, background_color) 
+    
+    # game board
+    gameBoard = Board(8, 8, squareLength, squareColor, screen) # 8x8 board
+    gameBoard.initChessPieces() # initialize chess pieces
+    gameBoard.drawGrid() # draws grid
+    gameBoard.drawPieces() # draws all pieces on grid
 
     # game loop
     isRunning = True
@@ -41,7 +39,24 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT: # break if quit event occured
                 isRunning = False
-    
+
+            elif event.type == pygame.MOUSEBUTTONDOWN: # user clicked
+                # convert coordinates of mouse to row and column in grid
+                mouseCol = (pygame.mouse.get_pos()[0] - gameBoard.xStart) // squareLength
+                mouseRow = (pygame.mouse.get_pos()[1] - gameBoard.yStart) // squareLength
+                mouseCol = int(mouseCol)
+                mouseRow = int(mouseRow)
+                # if selected square in grid, update selectedSquare
+                if gameBoard.inBounds(mouseCol, mouseRow):
+                    # update gameBoard
+                    gameBoard.drawGrid()
+                    gameBoard.drawPieces()
+                    # update selectedSquare
+                    selectedSquare = gameBoard.matrix[mouseRow, mouseCol]
+                    # highlight possible moves if chess piece selected
+                    moves = selectedSquare.validMoves() if selectedSquare else []
+                    gameBoard.highlightMoves(moves)
+        time.sleep(0.01)
 
 
 if __name__ == "__main__":
