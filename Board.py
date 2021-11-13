@@ -2,8 +2,8 @@ import numpy as np
 import pygame
 from Pieces.Pawn import Pawn
 
-# board is used to interact with the chess board
 class Board:
+    """ Board is the chess board containing all the chess pieces """
     def __init__(self, numRows, numCols, squareLength, squareColor, screen):
         self.matrix = np.empty((numRows, numCols), dtype="object")
         self.screen = screen
@@ -14,9 +14,9 @@ class Board:
         self.squareColor = squareColor
         self.highlightColor = (0, 200, 0)
 
+        # xStart and yStart are used for centering the grid
         width, height = screen.get_size()
         cols, rows = self.matrix.shape
-        # xStart and yStart are used for centering the grid
         self.xStart = (width - cols * self.squareLength) / 2
         self.yStart = (height - rows * self.squareLength) / 2
 
@@ -24,10 +24,10 @@ class Board:
     # if position is in bounds return true, else false
     def inBounds(self, x, y):
         gridWidth, gridHeight = self.matrix.shape
-
         return (x >= 0 and y >= 0 and x < gridWidth and y < gridHeight)
 
     # places all the chess pieces on the board
+    # only called once on start of new game
     def initChessPieces(self):
         width = len(self.matrix[0])
 
@@ -35,10 +35,11 @@ class Board:
         for col in range(width):
             pawn = Pawn("black", self.matrix, (col, 1), self.screen)
             self.setChessPiece(pawn, 1, col)
-
         for col in range(width):
             pawn = Pawn("white", self.matrix, (col, 6), self.screen)
             self.setChessPiece(pawn, 6, col)
+
+        # place all other chess pieces
 
     # set specific chess piece to position on board, else return
     def setChessPiece(self, chessPiece, row, col):
@@ -72,11 +73,10 @@ class Board:
         square = pygame.Rect(self.xStart, self.yStart, cols * self.squareLength, rows * self.squareLength)
         pygame.draw.rect(self.screen, self.squareColor, square, 2)
 
-        pygame.display.flip() # display
+        pygame.display.flip()
 
     # draw all pieces on board
     def drawPieces(self):
-        width, height = self.screen.get_size()
         cols, rows = self.matrix.shape
 
         for i in range(rows):
@@ -95,9 +95,9 @@ class Board:
     def highlightMoves(self, moves):
         for move in moves:
             col, row = move
-            x = col * self.squareLength
-            y = row * self.squareLength
-            # draw small circle in field of move
-            pygame.draw.circle(self.screen, self.highlightColor, (x+self.xStart+self.squareLength/2,y+self.yStart+self.squareLength/2), self.squareLength / 4)
+            x = col * self.squareLength + self.xStart+self.squareLength/2
+            y = row * self.squareLength + self.yStart+self.squareLength/2
+            # draw small circle in field if moving there is possible
+            pygame.draw.circle(self.screen, self.highlightColor, (x,y), self.squareLength / 4)
 
         pygame.display.flip()

@@ -1,7 +1,6 @@
 import time
 import pygame
-from Pieces.Pawn import Pawn
-from board import Board
+from Board import Board
 
 # create pygame window with size, title and color
 # returns screen
@@ -13,7 +12,6 @@ def initWindow(width, height, title, color):
 
     return screen
 
-
 # main function
 def main():
     # game variables
@@ -22,7 +20,7 @@ def main():
     squareLength = 70
     squareColor = (111, 73, 73)
     mouseCol, mouseRow = 0, 0
-    selectedSquare = None
+    selectedField = None
     
     # initialize game window
     screen = initWindow(width, height, title, background_color) 
@@ -41,20 +39,20 @@ def main():
                 isRunning = False
 
             elif event.type == pygame.MOUSEBUTTONDOWN: # user clicked
-                # convert coordinates of mouse to row and column in grid
+                # convert coordinates of mouse to rows and columns of grid
                 mouseCol = (pygame.mouse.get_pos()[0] - gameBoard.xStart) // squareLength
                 mouseRow = (pygame.mouse.get_pos()[1] - gameBoard.yStart) // squareLength
                 mouseCol = int(mouseCol)
                 mouseRow = int(mouseRow)
-                # if selected square in grid, update selectedSquare
+                # if selected square in grid, update selectedField
                 if gameBoard.inBounds(mouseCol, mouseRow):
-                    # update gameBoard
+                    # redraw gameBoard
                     gameBoard.drawGrid()
                     gameBoard.drawPieces()
-                    # update selectedSquare
-                    selectedSquare = gameBoard.matrix[mouseRow, mouseCol]
+                    # update selectedField
+                    selectedField = gameBoard.matrix[mouseRow, mouseCol]
                     # highlight possible moves if chess piece selected
-                    moves = selectedSquare.validMoves() if selectedSquare else []
+                    moves = selectedField.validMoves() if selectedField else []
                     gameBoard.highlightMoves(moves)
         time.sleep(0.01)
 
