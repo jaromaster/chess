@@ -3,8 +3,8 @@ import pygame
 from Board import Board
 
 # create pygame window with size, title and color
-# returns screen
-def initWindow(width, height, title, color):
+def initWindow(width, height, title, color) -> pygame.Surface:
+    """ initialize new pygame window with size, title, color """
     screen = pygame.display.set_mode((width, height))
     pygame.display.set_caption(title)
     screen.fill(color)
@@ -14,6 +14,7 @@ def initWindow(width, height, title, color):
 
 # main function
 def main():
+    """ main function contains all the game logic """
     # game variables
     width, height, title = 800, 600, "Chess"
     background_color = (255, 255, 255)
@@ -28,14 +29,14 @@ def main():
     # game board
     gameBoard = Board(8, 8, squareLength, squareColor, screen) # 8x8 board
     gameBoard.initChessPieces() # initialize chess pieces
-    gameBoard.drawGrid() # draws grid
-    gameBoard.drawPieces() # draws all pieces on grid
+    gameBoard.drawGrid() # draw grid
+    gameBoard.drawPieces() # draw all chess pieces on grid
 
     # game loop
     isRunning = True
     while isRunning:
         for event in pygame.event.get():
-            if event.type == pygame.QUIT: # break if quit event occured
+            if event.type == pygame.QUIT: # break if quit event occurred
                 isRunning = False
 
             elif event.type == pygame.MOUSEBUTTONDOWN: # user clicked

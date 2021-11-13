@@ -23,12 +23,13 @@ class Board:
 
     # if position is in bounds return true, else false
     def inBounds(self, x, y):
+        """ check if x and y are valid index values for self.matrix """
         gridWidth, gridHeight = self.matrix.shape
         return (x >= 0 and y >= 0 and x < gridWidth and y < gridHeight)
 
-    # places all the chess pieces on the board
     # only called once on start of new game
     def initChessPieces(self):
+        """ place all chess pieces at their starting positions """
         width = len(self.matrix[0])
 
         # place all pawns
@@ -43,6 +44,7 @@ class Board:
 
     # set specific chess piece to position on board, else return
     def setChessPiece(self, chessPiece, row, col):
+        """ set chess piece to specific field """
         if self.inBounds(col, row):
             self.matrix[row, col] = chessPiece
 
@@ -52,6 +54,7 @@ class Board:
 
     # draw grid using colored squares
     def drawGrid(self):
+        """ draw the grid """
         cols, rows = self.matrix.shape
 
         isWhite = True
@@ -75,8 +78,8 @@ class Board:
 
         pygame.display.flip()
 
-    # draw all pieces on board
     def drawPieces(self):
+        """ draw all chess pieces """
         cols, rows = self.matrix.shape
 
         for i in range(rows):
@@ -91,8 +94,8 @@ class Board:
 
         pygame.display.flip()
 
-    # highlight all moves given
     def highlightMoves(self, moves):
+        """ highlight all given moves with small circles """
         for move in moves:
             col, row = move
             x = col * self.squareLength + self.xStart+self.squareLength/2

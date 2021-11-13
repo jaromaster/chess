@@ -1,7 +1,7 @@
 import pygame
 
 class Pawn():
-    """ Pawn is the least powerful chess piece and only worth one point """
+    """ Pawn is the least powerful chess piece """
     def __init__(self, color, grid, pos, screen):
         self.color = color
         self.grid = grid
@@ -10,12 +10,13 @@ class Pawn():
 
     # if position is in bounds (in grid) return true, else false
     def inBounds(self, x, y):
+        """ check if x and y are valid index values for self.grid """
         gridWidth, gridHeight = self.grid.shape
         return (x >= 0 and y >= 0 and x < gridWidth and y < gridHeight)
 
-    # return all moves the pawn could make
     # checks for friendly chess pieces and enemy chess pieces
     def validMoves(self):
+        """ validMoves returns an array of all possible moves """
         moves = []
         x,y = self.pos[0], self.pos[1]
 
@@ -47,6 +48,7 @@ class Pawn():
     # for testing: draw circle
     # planned: image of pawn
     def draw(self, drawPos, radius):
+        """ draw pawn """
         color = self.color
         if self.color == "white":
             color = (200, 200, 200)
