@@ -1,6 +1,8 @@
 import numpy as np
 import pygame
+from Pieces.ChessPiece import ChessPiece
 from Pieces.Pawn import Pawn
+from Pieces.Rook import Rook
 
 class Board:
     """ Board is the chess board containing all the chess pieces """
@@ -35,18 +37,29 @@ class Board:
         # place all pawns
         for col in range(width):
             pawn = Pawn("black", self.matrix, (col, 1), self.screen)
-            self.setChessPiece(pawn, 1, col)
+            self.setChessPiece(pawn, col, 1)
         for col in range(width):
             pawn = Pawn("white", self.matrix, (col, 6), self.screen)
-            self.setChessPiece(pawn, 6, col)
+            self.setChessPiece(pawn, col, 6)
+
+        # place all rooks
+        rook = Rook("black", self.matrix, (0, 0), self.screen)
+        self.setChessPiece(rook, 0, 0)
+        rook = Rook("black", self.matrix, (7, 0), self.screen)
+        self.setChessPiece(rook, 7, 0)
+
+        rook = Rook("white", self.matrix, (0, 7), self.screen)
+        self.setChessPiece(rook, 0, 7)
+        rook = Rook("white", self.matrix, (7, 7), self.screen)
+        self.setChessPiece(rook, 7, 7)
 
         # place all other chess pieces
 
     # set specific chess piece to position on board, else return
-    def setChessPiece(self, chessPiece, row, col):
+    def setChessPiece(self, chessPiece, x, y):
         """ set chess piece to specific field """
-        if self.inBounds(col, row):
-            self.matrix[row, col] = chessPiece
+        if self.inBounds(x, y):
+            self.matrix[y, x] = chessPiece
 
     # return board size
     def getSize(self):
@@ -88,7 +101,7 @@ class Board:
                 y = i * self.squareLength
                 
                 # todo: more generic (without isinstance, working for every chess piece)
-                if isinstance(self.matrix[i, j], Pawn):
+                if isinstance(self.matrix[i, j], ChessPiece):
                     # draw pawn
                     self.matrix[i, j].draw((x+self.xStart+self.squareLength/2,y+self.yStart+self.squareLength/2), self.squareLength/2)
 
