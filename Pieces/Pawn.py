@@ -18,7 +18,7 @@ class Pawn():
     def validMoves(self):
         """ validMoves returns an array of all possible moves """
         moves = []
-        x,y = self.pos[0], self.pos[1]
+        x,y = self.pos[0], self.pos[1] # x: col, y: row
 
         if self.color == "white": # if white (pawn moves from bottom to top)
             # directly above pawn if empty
@@ -44,7 +44,6 @@ class Pawn():
 
         return moves
 
-    # draw pawn to board
     # for testing: draw circle
     # planned: image of pawn
     def draw(self, drawPos, radius):
@@ -54,3 +53,12 @@ class Pawn():
             color = (200, 200, 200)
 
         pygame.draw.circle(self.screen, color, drawPos, radius)
+
+
+    def moveTo(self, x, y):
+        """ move pawn to new position """
+        temp_pos = (x, y)
+        self.grid[y, x] = self # set to new position
+        x,y = self.pos[0], self.pos[1]
+        self.grid[y, x] = None # clear old position
+        self.pos = temp_pos # update own position

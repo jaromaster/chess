@@ -21,7 +21,6 @@ def main():
     squareLength = 70
     squareColor = (111, 73, 73)
     mouseCol, mouseRow = 0, 0
-    selectedField = None
     
     # initialize game window
     screen = initWindow(width, height, title, background_color) 
@@ -34,6 +33,8 @@ def main():
 
     # game loop
     isRunning = True
+    selectedField = None
+    moves = set()
     while isRunning:
         for event in pygame.event.get():
             if event.type == pygame.QUIT: # break if quit event occurred
@@ -47,13 +48,18 @@ def main():
                 mouseRow = int(mouseRow)
                 # if selected square in grid, update selectedField
                 if gameBoard.inBounds(mouseCol, mouseRow):
+                    # if player want to move chess piece
+                    x,y = mouseCol, mouseRow
+                    if selectedField and (x, y) in moves:
+                        selectedField.moveTo(x, y) # move chess piece to new position
+
                     # redraw gameBoard
                     gameBoard.drawGrid()
                     gameBoard.drawPieces()
                     # update selectedField
                     selectedField = gameBoard.matrix[mouseRow, mouseCol]
                     # highlight possible moves if chess piece selected
-                    moves = selectedField.validMoves() if selectedField else []
+                    moves = set(selectedField.validMoves()) if selectedField else []
                     gameBoard.highlightMoves(moves)
         time.sleep(0.01)
 
