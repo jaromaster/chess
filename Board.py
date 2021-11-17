@@ -1,5 +1,6 @@
 import numpy as np
 import pygame
+from Pieces.Bishop import Bishop
 from Pieces.ChessPiece import ChessPiece
 from Pieces.Pawn import Pawn
 from Pieces.Rook import Rook
@@ -52,6 +53,17 @@ class Board:
         self.setChessPiece(rook, 0, 7)
         rook = Rook("white", self.matrix, (7, 7), self.screen)
         self.setChessPiece(rook, 7, 7)
+
+        # place all bishops
+        bishop = Bishop("black", self.matrix, (2, 0), self.screen)
+        self.setChessPiece(bishop, 2, 0)
+        bishop = Bishop("black", self.matrix, (5, 0), self.screen)
+        self.setChessPiece(bishop, 5, 0)
+
+        bishop = Bishop("white", self.matrix, (2, 7), self.screen)
+        self.setChessPiece(bishop, 2, 7)
+        bishop = Bishop("white", self.matrix, (5, 7), self.screen)
+        self.setChessPiece(bishop, 5, 7)
 
         # place all other chess pieces
 
