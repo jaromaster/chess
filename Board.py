@@ -3,6 +3,7 @@ import pygame
 from Pieces.Bishop import Bishop
 from Pieces.ChessPiece import ChessPiece
 from Pieces.Pawn import Pawn
+from Pieces.Queen import Queen
 from Pieces.Rook import Rook
 
 class Board:
@@ -33,9 +34,9 @@ class Board:
     # only called once on start of new game
     def initChessPieces(self):
         """ place all chess pieces at their starting positions """
-        width = len(self.matrix[0])
-
+        
         # place all pawns
+        width = len(self.matrix[0])
         for col in range(width):
             pawn = Pawn("black", self.matrix, (col, 1), self.screen)
             self.setChessPiece(pawn, col, 1)
@@ -64,6 +65,12 @@ class Board:
         self.setChessPiece(bishop, 2, 7)
         bishop = Bishop("white", self.matrix, (5, 7), self.screen)
         self.setChessPiece(bishop, 5, 7)
+
+        # place all queens
+        queen = Queen("black", self.matrix, (3, 0), self.screen)
+        self.setChessPiece(queen, 3, 0)
+        queen = Queen("white", self.matrix, (4, 7), self.screen)
+        self.setChessPiece(queen, 4, 7)
 
         # place all other chess pieces
 
@@ -112,7 +119,6 @@ class Board:
                 x = j * self.squareLength
                 y = i * self.squareLength
                 
-                # todo: more generic (without isinstance, working for every chess piece)
                 if isinstance(self.matrix[i, j], ChessPiece):
                     # draw pawn
                     self.matrix[i, j].draw((x+self.xStart+self.squareLength/2,y+self.yStart+self.squareLength/2), self.squareLength/2)
