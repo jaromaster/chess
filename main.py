@@ -52,9 +52,10 @@ def main():
                     # if player wants to move chess piece
                     x,y = mouseCol, mouseRow
                     drawMoves = True
-                    if selectedField and (x, y) in moves:
+                    if selectedField and (x, y) in moves and selectedField.color == turn: # make move if selectedField is chess piece and has player's color
                         selectedField.moveTo(x, y) # move chess piece to new position
                         moves = set() # reset moves
+                        turn = "white" if turn == "black" else "black" # switch color
                         drawMoves = False
 
                     # redraw gameBoard
