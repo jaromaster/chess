@@ -103,7 +103,7 @@ class Board:
 
         pygame.display.flip()
 
-    def drawPieces(self):
+    def drawChessPieces(self):
         """ draw all chess pieces """
         cols, rows = self.matrix.shape
 

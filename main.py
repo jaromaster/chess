@@ -27,11 +27,11 @@ def main():
     # game board
     gameBoard = Board(8, 8, squareLength, squareColor, screen) # 8x8 board
     gameBoard.initChessPieces() # initialize chess pieces
-    gameBoard.drawGrid() # draw grid
-    gameBoard.drawPieces() # draw all chess pieces on grid
+    gameBoard.drawGrid()
+    gameBoard.drawChessPieces() # draw all chess pieces on grid
 
-    isRunning = True # if game still running
-    selectedField = None # field currently selected
+    isRunning = True
+    selectedField = None
     turn = "white"
     mouseCol, mouseRow = 0, 0
     moves = set() # possible moves of selected chess piece
@@ -60,11 +60,11 @@ def main():
 
                     # redraw gameBoard
                     gameBoard.drawGrid()
-                    gameBoard.drawPieces()
+                    gameBoard.drawChessPieces()
                     # update selectedField
                     selectedField = gameBoard.matrix[mouseRow, mouseCol]
                     # highlight possible moves if chess piece selected
-                    if drawMoves:
+                    if drawMoves and selectedField and selectedField.color == turn:
                         moves = set(selectedField.validMoves()) if selectedField else []
                         gameBoard.highlightMoves(moves)
 
