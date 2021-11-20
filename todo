@@ -1,0 +1,7 @@
+create King
+check if check or checkmate
+check for win
+restart game (button or key input)
+implement pawns first move correctly (first move can be two steps)
+implement chess piece switch (if pawn reaches other side)
+implement castling
