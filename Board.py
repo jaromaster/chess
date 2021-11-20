@@ -88,11 +88,17 @@ class Board:
         self.setChessPiece(bishop, 5, 7)
 
         # place all queens
-        queenImagePath = "Assets/pawn.png"
-        queen = Queen("black", self.grid, (3, 0), self.screen, image)
+        queenImagePath = "Assets/queen_black.png"
+        imageBlack = pygame.image.load(queenImagePath).convert_alpha()
+        imageBlack = pygame.transform.scale(imageBlack, (self.squareLength, self.squareLength))
+        queenImagePath = "Assets/queen_white.png"
+        imageWhite = pygame.image.load(queenImagePath).convert_alpha()
+        imageWhite = pygame.transform.scale(imageWhite, (self.squareLength, self.squareLength))
+        image = None
+        queen = Queen("black", self.grid, (3, 0), self.screen, imageBlack)
         self.setChessPiece(queen, 3, 0)
-        queen = Queen("white", self.grid, (4, 7), self.screen, image)
-        self.setChessPiece(queen, 4, 7)
+        queen = Queen("white", self.grid, (3, 7), self.screen, imageWhite)
+        self.setChessPiece(queen, 3, 7)
 
         # place all knights
         knightImagePath = "Assets/pawn.png"
@@ -158,10 +164,11 @@ class Board:
                 y = i * self.squareLength
                 
                 if isinstance(self.grid[i, j], ChessPiece):
-                    if isinstance(self.grid[i, j], Pawn) or isinstance(self.grid[i, j], Rook):
-                        self.grid[i, j].drawImage((x+self.xStart+self.squareLength/2,y+self.yStart+self.squareLength/2), self.squareLength)
-                    else:
+                    if isinstance(self.grid[i, j], Knight) or isinstance(self.grid[i, j], Bishop):
                         self.grid[i, j].draw((x+self.xStart+self.squareLength/2,y+self.yStart+self.squareLength/2), self.squareLength/2)
+                    else:
+                        self.grid[i, j].drawImage((x+self.xStart+self.squareLength/2,y+self.yStart+self.squareLength/2), self.squareLength)
+                        
 
         pygame.display.flip()
 

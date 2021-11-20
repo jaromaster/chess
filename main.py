@@ -15,9 +15,9 @@ def initWindow(width, height, title, color) -> pygame.Surface:
 # main function
 def main():
     """ main function contains all the game logic """
-    width, height, title = 800, 600, "Chess"
+    width, height, title = 1000, 800, "Chess"
     background_color = (255, 255, 255)
-    squareLength = 70
+    squareLength = 80
     squareColor = (111, 73, 73)
     
     # initialize game window
