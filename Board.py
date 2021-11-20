@@ -2,14 +2,16 @@ import numpy as np
 import pygame
 from Pieces.Bishop import Bishop
 from Pieces.ChessPiece import ChessPiece
+from Pieces.Knight import Knight
 from Pieces.Pawn import Pawn
 from Pieces.Queen import Queen
 from Pieces.Rook import Rook
 
 class Board:
     """ Board is the chess board containing all the chess pieces """
-    def __init__(self, numRows, numCols, squareLength, squareColor, screen):
-        self.matrix = np.empty((numRows, numCols), dtype="object")
+    def __init__(self, squareLength, squareColor, screen):
+        numRows, numCols = 8, 8
+        self.grid = np.empty((numRows, numCols), dtype="object")
         self.screen = screen
         # side length of the squares
         self.squareLength = squareLength
@@ -20,15 +22,17 @@ class Board:
 
         # xStart and yStart are used for centering the grid
         width, height = screen.get_size()
-        cols, rows = self.matrix.shape
+        cols, rows = self.grid.shape
         self.xStart = (width - cols * self.squareLength) / 2
         self.yStart = (height - rows * self.squareLength) / 2
+        
+        self.initChessPieces() # initialize chess pieces
 
 
     # if position is in bounds return true, else false
     def inBounds(self, x, y):
-        """ check if x and y are valid index values for self.matrix """
-        gridWidth, gridHeight = self.matrix.shape
+        """ check if x and y are valid index values for self.grid """
+        gridWidth, gridHeight = self.grid.shape
         return (x >= 0 and y >= 0 and x < gridWidth and y < gridHeight)
 
     # only called once on start of new game
@@ -36,58 +40,71 @@ class Board:
         """ place all chess pieces at their starting positions """
         
         # place all pawns
-        width = len(self.matrix[0])
+        width = len(self.grid[0])
         for col in range(width):
-            pawn = Pawn("black", self.matrix, (col, 1), self.screen)
+            pawn = Pawn("black", self.grid, (col, 1), self.screen)
             self.setChessPiece(pawn, col, 1)
         for col in range(width):
-            pawn = Pawn("white", self.matrix, (col, 6), self.screen)
+            pawn = Pawn("white", self.grid, (col, 6), self.screen)
             self.setChessPiece(pawn, col, 6)
 
         # place all rooks
-        rook = Rook("black", self.matrix, (0, 0), self.screen)
+        rook = Rook("black", self.grid, (0, 0), self.screen)
         self.setChessPiece(rook, 0, 0)
-        rook = Rook("black", self.matrix, (7, 0), self.screen)
+        rook = Rook("black", self.grid, (7, 0), self.screen)
         self.setChessPiece(rook, 7, 0)
 
-        rook = Rook("white", self.matrix, (0, 7), self.screen)
+        rook = Rook("white", self.grid, (0, 7), self.screen)
         self.setChessPiece(rook, 0, 7)
-        rook = Rook("white", self.matrix, (7, 7), self.screen)
+        rook = Rook("white", self.grid, (7, 7), self.screen)
         self.setChessPiece(rook, 7, 7)
 
         # place all bishops
-        bishop = Bishop("black", self.matrix, (2, 0), self.screen)
+        bishop = Bishop("black", self.grid, (2, 0), self.screen)
         self.setChessPiece(bishop, 2, 0)
-        bishop = Bishop("black", self.matrix, (5, 0), self.screen)
+        bishop = Bishop("black", self.grid, (5, 0), self.screen)
         self.setChessPiece(bishop, 5, 0)
 
-        bishop = Bishop("white", self.matrix, (2, 7), self.screen)
+        bishop = Bishop("white", self.grid, (2, 7), self.screen)
         self.setChessPiece(bishop, 2, 7)
-        bishop = Bishop("white", self.matrix, (5, 7), self.screen)
+        bishop = Bishop("white", self.grid, (5, 7), self.screen)
         self.setChessPiece(bishop, 5, 7)
 
         # place all queens
-        queen = Queen("black", self.matrix, (3, 0), self.screen)
+        queen = Queen("black", self.grid, (3, 0), self.screen)
         self.setChessPiece(queen, 3, 0)
-        queen = Queen("white", self.matrix, (4, 7), self.screen)
+        queen = Queen("white", self.grid, (4, 7), self.screen)
         self.setChessPiece(queen, 4, 7)
 
-        # place all other chess pieces
+        # place all knights
+        knight = Knight("black", self.grid, (1,0), self.screen)
+        self.setChessPiece(knight, 1, 0)
+        knight = Knight("black", self.grid, (6,0), self.screen)
+        self.setChessPiece(knight, 6, 0)
+
+        knight = Knight("white", self.grid, (1,7), self.screen)
+        self.setChessPiece(knight, 1, 7)
+        knight = Knight("white", self.grid, (6,7), self.screen)
+        self.setChessPiece(knight, 6, 7)
+
+
+
+        # place all kings
 
     # set specific chess piece to position on board, else return
     def setChessPiece(self, chessPiece, x, y):
         """ set chess piece to specific field """
         if self.inBounds(x, y):
-            self.matrix[y, x] = chessPiece
+            self.grid[y, x] = chessPiece
 
     # return board size
     def getSize(self):
-        return self.matrix.shape
+        return self.grid.shape
 
     # draw grid using colored squares
     def drawGrid(self):
         """ draw the grid """
-        cols, rows = self.matrix.shape
+        cols, rows = self.grid.shape
 
         isWhite = True
         for i in range(rows):
@@ -112,16 +129,16 @@ class Board:
 
     def drawChessPieces(self):
         """ draw all chess pieces """
-        cols, rows = self.matrix.shape
+        cols, rows = self.grid.shape
 
         for i in range(rows):
             for j in range(cols):
                 x = j * self.squareLength
                 y = i * self.squareLength
                 
-                if isinstance(self.matrix[i, j], ChessPiece):
+                if isinstance(self.grid[i, j], ChessPiece):
                     # draw pawn
-                    self.matrix[i, j].draw((x+self.xStart+self.squareLength/2,y+self.yStart+self.squareLength/2), self.squareLength/2)
+                    self.grid[i, j].draw((x+self.xStart+self.squareLength/2,y+self.yStart+self.squareLength/2), self.squareLength/2)
 
         pygame.display.flip()
 

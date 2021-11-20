@@ -15,7 +15,6 @@ def initWindow(width, height, title, color) -> pygame.Surface:
 # main function
 def main():
     """ main function contains all the game logic """
-    # game variables
     width, height, title = 800, 600, "Chess"
     background_color = (255, 255, 255)
     squareLength = 70
@@ -25,8 +24,7 @@ def main():
     screen = initWindow(width, height, title, background_color) 
     
     # game board
-    gameBoard = Board(8, 8, squareLength, squareColor, screen) # 8x8 board
-    gameBoard.initChessPieces() # initialize chess pieces
+    gameBoard = Board(squareLength, squareColor, screen) # 8x8 board
     gameBoard.drawGrid()
     gameBoard.drawChessPieces() # draw all chess pieces on grid
 
@@ -57,19 +55,19 @@ def main():
                         moves = set() # reset moves
                         turn = "white" if turn == "black" else "black" # switch color
                         drawMoves = False
-
+                    
                     # redraw gameBoard
                     gameBoard.drawGrid()
                     gameBoard.drawChessPieces()
+
                     # update selectedField
-                    selectedField = gameBoard.matrix[mouseRow, mouseCol]
+                    selectedField = gameBoard.grid[mouseRow, mouseCol]
                     # highlight possible moves if chess piece selected
                     if drawMoves and selectedField and selectedField.color == turn:
-                        moves = set(selectedField.validMoves()) if selectedField else []
+                        moves = set(selectedField.validMoves()) if selectedField else set()
                         gameBoard.highlightMoves(moves)
 
         time.sleep(0.01) # delay
-
 
 if __name__ == "__main__":
     main()
