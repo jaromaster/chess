@@ -12,6 +12,7 @@ class Board:
     def __init__(self, squareLength, squareColor, screen):
         numRows, numCols = 8, 8
         self.grid = np.empty((numRows, numCols), dtype="object")
+        self.gridColors = []
         self.screen = screen
         # side length of the squares
         self.squareLength = squareLength
@@ -42,10 +43,10 @@ class Board:
         # place all pawns
         pawnImagePath = "Assets/pawn_black.png"
         imageBlack = pygame.image.load(pawnImagePath)
-        imageBlack = pygame.transform.scale(imageBlack, (70, 70))
+        imageBlack = pygame.transform.scale(imageBlack, (self.squareLength, self.squareLength))
         pawnImagePath = "Assets/pawn_white.png"
         imageWhite = pygame.image.load(pawnImagePath)
-        imageWhite = pygame.transform.scale(imageWhite, (70, 70))
+        imageWhite = pygame.transform.scale(imageWhite, (self.squareLength, self.squareLength))
         image = None
 
         width = len(self.grid[0])
@@ -57,15 +58,21 @@ class Board:
             self.setChessPiece(pawn, col, 6)
 
         # place all rooks
-        rookImagePath = "Assets/pawn.png"
-        rook = Rook("black", self.grid, (0, 0), self.screen, image)
+        rookImagePath = "Assets/rook_black.png"
+        imageBlack = pygame.image.load(rookImagePath)
+        imageBlack = pygame.transform.scale(imageBlack, (self.squareLength, self.squareLength))
+        rookImagePath = "Assets/rook_white.png"
+        imageWhite = pygame.image.load(rookImagePath)
+        imageWhite = pygame.transform.scale(imageWhite, (self.squareLength, self.squareLength))
+        image = None
+        rook = Rook("black", self.grid, (0, 0), self.screen, imageBlack)
         self.setChessPiece(rook, 0, 0)
-        rook = Rook("black", self.grid, (7, 0), self.screen, image)
+        rook = Rook("black", self.grid, (7, 0), self.screen, imageBlack)
         self.setChessPiece(rook, 7, 0)
 
-        rook = Rook("white", self.grid, (0, 7), self.screen, image)
+        rook = Rook("white", self.grid, (0, 7), self.screen, imageWhite)
         self.setChessPiece(rook, 0, 7)
-        rook = Rook("white", self.grid, (7, 7), self.screen, image)
+        rook = Rook("white", self.grid, (7, 7), self.screen, imageWhite)
         self.setChessPiece(rook, 7, 7)
 
         # place all bishops
@@ -118,6 +125,7 @@ class Board:
 
         isWhite = True
         for i in range(rows):
+            colorsRow = []
             for j in range(cols):
                 x = j * self.squareLength
                 y = i * self.squareLength
@@ -125,10 +133,13 @@ class Board:
                 square = pygame.Rect(x + self.xStart, y + self.yStart, self.squareLength, self.squareLength)
                 if isWhite:
                     pygame.draw.rect(self.screen, (255,255,255), square) # draw white cell
+                    colorsRow.append("w")
                 else:
                     pygame.draw.rect(self.screen, self.squareColor, square) # draw colored cell
+                    colorsRow.append("b")
                 
                 isWhite = not isWhite # switch black and white
+            self.gridColors.append(colorsRow)
             isWhite = not isWhite # after line break: switch again
 
         # draw square around grid
@@ -147,7 +158,7 @@ class Board:
                 y = i * self.squareLength
                 
                 if isinstance(self.grid[i, j], ChessPiece):
-                    if isinstance(self.grid[i, j], Pawn):
+                    if isinstance(self.grid[i, j], Pawn) or isinstance(self.grid[i, j], Rook):
                         self.grid[i, j].drawImage((x+self.xStart+self.squareLength/2,y+self.yStart+self.squareLength/2), self.squareLength)
                     else:
                         self.grid[i, j].draw((x+self.xStart+self.squareLength/2,y+self.yStart+self.squareLength/2), self.squareLength/2)

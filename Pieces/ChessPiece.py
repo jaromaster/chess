@@ -26,7 +26,7 @@ class ChessPiece:
         if self.color == "white":
             color = (200, 200, 200)
 
-        pygame.draw.circle(self.screen, color, drawPos, radius)
+        pygame.draw.circle(self.screen, color, drawPos, radius)    
 
     def drawImage(self, drawPos, imageWidth):
         """ draw image of chess piece """
