@@ -1,16 +1,13 @@
 import time
 import pygame
-from pygame.locals import *
 from Board import Board
 
 # create pygame window with size, title and color
 def initWindow(width, height, title, color) -> pygame.Surface:
     """ initialize new pygame window with size, title, color """
-    flags = pygame.DOUBLEBUF
-    screen = pygame.display.set_mode((width, height), flags)
+    screen = pygame.display.set_mode((width, height))
     pygame.display.set_caption(title)
     screen.fill(color)
-    screen.set_alpha(None)
     pygame.display.flip()
 
     return screen

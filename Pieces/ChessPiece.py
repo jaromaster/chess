@@ -11,6 +11,8 @@ class ChessPiece:
 
         # load and transform image
         self.image = image
+        if self.image:
+            self.imageRect = self.image.get_rect()
 
     # if position is in bounds (in grid) return true, else false
     def inBounds(self, x, y):
@@ -30,12 +32,10 @@ class ChessPiece:
 
     def drawImage(self, drawPos, imageWidth):
         """ draw image of chess piece """
-        imageRect = self.image.get_rect()
-        imageRect.x = drawPos[0] - imageWidth / 2
-        imageRect.y = drawPos[1] - imageWidth / 2
+        self.imageRect.x = drawPos[0] - imageWidth / 2
+        self.imageRect.y = drawPos[1] - imageWidth / 2
 
-        self.screen.blit(self.image, imageRect)
-        pygame.display.flip()
+        self.screen.blit(self.image, self.imageRect)
 
     def moveTo(self, x, y):
         """ move chess piece to new position """

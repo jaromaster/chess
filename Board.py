@@ -42,10 +42,10 @@ class Board:
         
         # place all pawns
         pawnImagePath = "Assets/pawn_black.png"
-        imageBlack = pygame.image.load(pawnImagePath)
+        imageBlack = pygame.image.load(pawnImagePath).convert_alpha()
         imageBlack = pygame.transform.scale(imageBlack, (self.squareLength, self.squareLength))
         pawnImagePath = "Assets/pawn_white.png"
-        imageWhite = pygame.image.load(pawnImagePath)
+        imageWhite = pygame.image.load(pawnImagePath).convert_alpha()
         imageWhite = pygame.transform.scale(imageWhite, (self.squareLength, self.squareLength))
         image = None
 
@@ -59,10 +59,10 @@ class Board:
 
         # place all rooks
         rookImagePath = "Assets/rook_black.png"
-        imageBlack = pygame.image.load(rookImagePath)
+        imageBlack = pygame.image.load(rookImagePath).convert_alpha()
         imageBlack = pygame.transform.scale(imageBlack, (self.squareLength, self.squareLength))
         rookImagePath = "Assets/rook_white.png"
-        imageWhite = pygame.image.load(rookImagePath)
+        imageWhite = pygame.image.load(rookImagePath).convert_alpha()
         imageWhite = pygame.transform.scale(imageWhite, (self.squareLength, self.squareLength))
         image = None
         rook = Rook("black", self.grid, (0, 0), self.screen, imageBlack)
