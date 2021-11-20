@@ -40,15 +40,15 @@ class Board:
     def initChessPieces(self):
         """ place all chess pieces at their starting positions """
         
-        # place all pawns
+        imgSize = (self.squareLength - 5, self.squareLength - 5)
+
+        # create and place all pawns
         pawnImagePath = "Assets/pawn_black.png"
         imageBlack = pygame.image.load(pawnImagePath).convert_alpha()
-        imageBlack = pygame.transform.scale(imageBlack, (self.squareLength, self.squareLength))
+        imageBlack = pygame.transform.scale(imageBlack, imgSize)
         pawnImagePath = "Assets/pawn_white.png"
         imageWhite = pygame.image.load(pawnImagePath).convert_alpha()
-        imageWhite = pygame.transform.scale(imageWhite, (self.squareLength, self.squareLength))
-        image = None
-
+        imageWhite = pygame.transform.scale(imageWhite, imgSize)
         width = len(self.grid[0])
         for col in range(width):
             pawn = Pawn("black", self.grid, (col, 1), self.screen, imageBlack)
@@ -57,14 +57,13 @@ class Board:
             pawn = Pawn("white", self.grid, (col, 6), self.screen, imageWhite)
             self.setChessPiece(pawn, col, 6)
 
-        # place all rooks
+        # create and place all rooks
         rookImagePath = "Assets/rook_black.png"
         imageBlack = pygame.image.load(rookImagePath).convert_alpha()
-        imageBlack = pygame.transform.scale(imageBlack, (self.squareLength, self.squareLength))
+        imageBlack = pygame.transform.scale(imageBlack, imgSize)
         rookImagePath = "Assets/rook_white.png"
         imageWhite = pygame.image.load(rookImagePath).convert_alpha()
-        imageWhite = pygame.transform.scale(imageWhite, (self.squareLength, self.squareLength))
-        image = None
+        imageWhite = pygame.transform.scale(imageWhite, imgSize)
         rook = Rook("black", self.grid, (0, 0), self.screen, imageBlack)
         self.setChessPiece(rook, 0, 0)
         rook = Rook("black", self.grid, (7, 0), self.screen, imageBlack)
@@ -75,14 +74,13 @@ class Board:
         rook = Rook("white", self.grid, (7, 7), self.screen, imageWhite)
         self.setChessPiece(rook, 7, 7)
 
-        # place all bishops
+        # create and place all bishops
         bishopImagePath = "Assets/bishop_black.png"
         imageBlack = pygame.image.load(bishopImagePath).convert_alpha()
-        imageBlack = pygame.transform.scale(imageBlack, (self.squareLength, self.squareLength))
+        imageBlack = pygame.transform.scale(imageBlack, imgSize)
         bishopImagePath = "Assets/bishop_white.png"
         imageWhite = pygame.image.load(bishopImagePath).convert_alpha()
-        imageWhite = pygame.transform.scale(imageWhite, (self.squareLength, self.squareLength))
-        image = None
+        imageWhite = pygame.transform.scale(imageWhite, imgSize)
         bishop = Bishop("black", self.grid, (2, 0), self.screen, imageBlack)
         self.setChessPiece(bishop, 2, 0)
         bishop = Bishop("black", self.grid, (5, 0), self.screen, imageBlack)
@@ -93,29 +91,33 @@ class Board:
         bishop = Bishop("white", self.grid, (5, 7), self.screen, imageWhite)
         self.setChessPiece(bishop, 5, 7)
 
-        # place all queens
+        # create and place all queens
         queenImagePath = "Assets/queen_black.png"
         imageBlack = pygame.image.load(queenImagePath).convert_alpha()
-        imageBlack = pygame.transform.scale(imageBlack, (self.squareLength, self.squareLength))
+        imageBlack = pygame.transform.scale(imageBlack, imgSize)
         queenImagePath = "Assets/queen_white.png"
         imageWhite = pygame.image.load(queenImagePath).convert_alpha()
-        imageWhite = pygame.transform.scale(imageWhite, (self.squareLength, self.squareLength))
-        image = None
+        imageWhite = pygame.transform.scale(imageWhite, imgSize)
         queen = Queen("black", self.grid, (3, 0), self.screen, imageBlack)
         self.setChessPiece(queen, 3, 0)
         queen = Queen("white", self.grid, (3, 7), self.screen, imageWhite)
         self.setChessPiece(queen, 3, 7)
 
-        # place all knights
-        knightImagePath = "Assets/pawn.png"
-        knight = Knight("black", self.grid, (1,0), self.screen, image)
+        # create and place all knights
+        knightImagePath = "Assets/knight_black.png"
+        imageBlack = pygame.image.load(knightImagePath).convert_alpha()
+        imageBlack = pygame.transform.scale(imageBlack, imgSize)
+        knightImagePath = "Assets/knight_white.png"
+        imageWhite = pygame.image.load(knightImagePath).convert_alpha()
+        imageWhite = pygame.transform.scale(imageWhite, imgSize)
+        knight = Knight("black", self.grid, (1,0), self.screen, imageBlack)
         self.setChessPiece(knight, 1, 0)
-        knight = Knight("black", self.grid, (6,0), self.screen, image)
+        knight = Knight("black", self.grid, (6,0), self.screen, imageBlack)
         self.setChessPiece(knight, 6, 0)
 
-        knight = Knight("white", self.grid, (1,7), self.screen, image)
+        knight = Knight("white", self.grid, (1,7), self.screen, imageWhite)
         self.setChessPiece(knight, 1, 7)
-        knight = Knight("white", self.grid, (6,7), self.screen, image)
+        knight = Knight("white", self.grid, (6,7), self.screen, imageWhite)
         self.setChessPiece(knight, 6, 7)
 
         # place all kings
@@ -169,11 +171,8 @@ class Board:
                 x = j * self.squareLength
                 y = i * self.squareLength
                 
-                if isinstance(self.grid[i, j], ChessPiece):
-                    if isinstance(self.grid[i, j], Knight):
-                        self.grid[i, j].draw((x+self.xStart+self.squareLength/2,y+self.yStart+self.squareLength/2), self.squareLength/2)
-                    else:
-                        self.grid[i, j].drawImage((x+self.xStart+self.squareLength/2,y+self.yStart+self.squareLength/2), self.squareLength)
+                if self.grid[i, j] != None:
+                    self.grid[i, j].drawImage((x+self.xStart+self.squareLength/2,y+self.yStart+self.squareLength/2), self.squareLength)
                         
 
         pygame.display.flip()
