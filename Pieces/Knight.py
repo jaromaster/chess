@@ -2,8 +2,8 @@ from Pieces.ChessPiece import ChessPiece
 
 class Knight(ChessPiece):
     """ The Knight can jump over other chess pieces """
-    def __init__(self, color, grid, pos, screen):
-        super().__init__(color, grid, pos, screen)
+    def __init__(self, color, grid, pos, screen, image):
+        super().__init__(color, grid, pos, screen, image)
 
     def validMoves(self):
         """ validMoves returns an array of all possible moves """

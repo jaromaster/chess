@@ -2,8 +2,8 @@ from Pieces.ChessPiece import ChessPiece
 
 class Pawn(ChessPiece):
     """ Pawn is the least powerful chess piece """
-    def __init__(self, color, grid, pos, screen):
-        super().__init__(color, grid, pos, screen)
+    def __init__(self, color, grid, pos, screen, image):
+        super().__init__(color, grid, pos, screen, image)
 
     # checks for friendly chess pieces and enemy chess pieces
     def validMoves(self):

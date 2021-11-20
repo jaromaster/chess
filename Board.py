@@ -40,54 +40,64 @@ class Board:
         """ place all chess pieces at their starting positions """
         
         # place all pawns
+        pawnImagePath = "Assets/pawn_black.png"
+        imageBlack = pygame.image.load(pawnImagePath)
+        imageBlack = pygame.transform.scale(imageBlack, (70, 70))
+        pawnImagePath = "Assets/pawn_white.png"
+        imageWhite = pygame.image.load(pawnImagePath)
+        imageWhite = pygame.transform.scale(imageWhite, (70, 70))
+        image = None
+
         width = len(self.grid[0])
         for col in range(width):
-            pawn = Pawn("black", self.grid, (col, 1), self.screen)
+            pawn = Pawn("black", self.grid, (col, 1), self.screen, imageBlack)
             self.setChessPiece(pawn, col, 1)
         for col in range(width):
-            pawn = Pawn("white", self.grid, (col, 6), self.screen)
+            pawn = Pawn("white", self.grid, (col, 6), self.screen, imageWhite)
             self.setChessPiece(pawn, col, 6)
 
         # place all rooks
-        rook = Rook("black", self.grid, (0, 0), self.screen)
+        rookImagePath = "Assets/pawn.png"
+        rook = Rook("black", self.grid, (0, 0), self.screen, image)
         self.setChessPiece(rook, 0, 0)
-        rook = Rook("black", self.grid, (7, 0), self.screen)
+        rook = Rook("black", self.grid, (7, 0), self.screen, image)
         self.setChessPiece(rook, 7, 0)
 
-        rook = Rook("white", self.grid, (0, 7), self.screen)
+        rook = Rook("white", self.grid, (0, 7), self.screen, image)
         self.setChessPiece(rook, 0, 7)
-        rook = Rook("white", self.grid, (7, 7), self.screen)
+        rook = Rook("white", self.grid, (7, 7), self.screen, image)
         self.setChessPiece(rook, 7, 7)
 
         # place all bishops
-        bishop = Bishop("black", self.grid, (2, 0), self.screen)
+        bishopImagePath = "Assets/pawn.png"
+        bishop = Bishop("black", self.grid, (2, 0), self.screen, image)
         self.setChessPiece(bishop, 2, 0)
-        bishop = Bishop("black", self.grid, (5, 0), self.screen)
+        bishop = Bishop("black", self.grid, (5, 0), self.screen, image)
         self.setChessPiece(bishop, 5, 0)
 
-        bishop = Bishop("white", self.grid, (2, 7), self.screen)
+        bishop = Bishop("white", self.grid, (2, 7), self.screen, image)
         self.setChessPiece(bishop, 2, 7)
-        bishop = Bishop("white", self.grid, (5, 7), self.screen)
+        bishop = Bishop("white", self.grid, (5, 7), self.screen, image)
         self.setChessPiece(bishop, 5, 7)
 
         # place all queens
-        queen = Queen("black", self.grid, (3, 0), self.screen)
+        queenImagePath = "Assets/pawn.png"
+        queen = Queen("black", self.grid, (3, 0), self.screen, image)
         self.setChessPiece(queen, 3, 0)
-        queen = Queen("white", self.grid, (4, 7), self.screen)
+        queen = Queen("white", self.grid, (4, 7), self.screen, image)
         self.setChessPiece(queen, 4, 7)
 
         # place all knights
-        knight = Knight("black", self.grid, (1,0), self.screen)
+        knightImagePath = "Assets/pawn.png"
+        knight = Knight("black", self.grid, (1,0), self.screen, image)
         self.setChessPiece(knight, 1, 0)
-        knight = Knight("black", self.grid, (6,0), self.screen)
+        knight = Knight("black", self.grid, (6,0), self.screen, image)
         self.setChessPiece(knight, 6, 0)
 
-        knight = Knight("white", self.grid, (1,7), self.screen)
+        knight = Knight("white", self.grid, (1,7), self.screen, image)
         self.setChessPiece(knight, 1, 7)
-        knight = Knight("white", self.grid, (6,7), self.screen)
+        knight = Knight("white", self.grid, (6,7), self.screen, image)
         self.setChessPiece(knight, 6, 7)
-
-
 
         # place all kings
 
@@ -137,8 +147,10 @@ class Board:
                 y = i * self.squareLength
                 
                 if isinstance(self.grid[i, j], ChessPiece):
-                    # draw pawn
-                    self.grid[i, j].draw((x+self.xStart+self.squareLength/2,y+self.yStart+self.squareLength/2), self.squareLength/2)
+                    if isinstance(self.grid[i, j], Pawn):
+                        self.grid[i, j].drawImage((x+self.xStart+self.squareLength/2,y+self.yStart+self.squareLength/2), self.squareLength)
+                    else:
+                        self.grid[i, j].draw((x+self.xStart+self.squareLength/2,y+self.yStart+self.squareLength/2), self.squareLength/2)
 
         pygame.display.flip()
 

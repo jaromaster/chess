@@ -3,11 +3,14 @@ import pygame
 class ChessPiece:
     """ ChessPiece is the base class for all chess pieces """
 
-    def __init__(self, color, grid, pos, screen):
+    def __init__(self, color, grid, pos, screen, image):
         self.color = color
         self.grid = grid
         self.pos = pos
         self.screen = screen
+
+        # load and transform image
+        self.image = image
 
     # if position is in bounds (in grid) return true, else false
     def inBounds(self, x, y):
@@ -24,6 +27,15 @@ class ChessPiece:
             color = (200, 200, 200)
 
         pygame.draw.circle(self.screen, color, drawPos, radius)
+
+    def drawImage(self, drawPos, imageWidth):
+        """ draw image of chess piece """
+        imageRect = self.image.get_rect()
+        imageRect.x = drawPos[0] - imageWidth / 2
+        imageRect.y = drawPos[1] - imageWidth / 2
+
+        self.screen.blit(self.image, imageRect)
+        pygame.display.flip()
 
     def moveTo(self, x, y):
         """ move chess piece to new position """
