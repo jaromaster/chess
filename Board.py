@@ -121,16 +121,15 @@ class Board:
         self.setChessPiece(knight, 6, 7)
 
         # place the two kings
-        # kingImagePath = "Assets/king_black.png"
-        # imageBlack = pygame.image.load(kingImagePath).convert_alpha()
-        # imageBlack = pygame.transform.scale(imageBlack, imgSize)
-        # kingImagePath = "Assets/king_white.png"
-        # imageWhite = pygame.image.load(kingImagePath).convert_alpha()
-        # imageWhite = pygame.transform.scale(imageWhite, imgSize)
-        imageBlack, imageWhite = None, None
+        kingImagePath = "Assets/king_black.png"
+        imageBlack = pygame.image.load(kingImagePath).convert_alpha()
+        imageBlack = pygame.transform.scale(imageBlack, (imgSize[0],imgSize[1]-10)) # image is too high
+        kingImagePath = "Assets/king_white.png"
+        imageWhite = pygame.image.load(kingImagePath).convert_alpha()
+        imageWhite = pygame.transform.scale(imageWhite, (imgSize[0],imgSize[1]-10)) # image is too high
         knight = King("black", self.grid, (4,0), self.screen, imageBlack)
         self.setChessPiece(knight, 4, 0)
-        knight = King("white", self.grid, (4,7), self.screen, imageBlack)
+        knight = King("white", self.grid, (4,7), self.screen, imageWhite)
         self.setChessPiece(knight, 4, 7)
 
     # set specific chess piece to position on board, else return
@@ -184,7 +183,8 @@ class Board:
                 
                 if self.grid[i, j] != None:
                     if isinstance(self.grid[i, j], King):
-                        self.grid[i, j].draw((x+self.xStart+self.squareLength/2,y+self.yStart+self.squareLength/2), self.squareLength / 2)
+                        offset = 8
+                        self.grid[i, j].drawImage((x+self.xStart+self.squareLength/2,y+self.yStart+self.squareLength/2+offset), self.squareLength)
                         continue
                     self.grid[i, j].drawImage((x+self.xStart+self.squareLength/2,y+self.yStart+self.squareLength/2), self.squareLength)
                         
