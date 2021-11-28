@@ -132,6 +132,22 @@ class Board:
         knight = King("white", self.grid, (4,7), self.screen, imageWhite)
         self.setChessPiece(knight, 4, 7)
 
+    def checkBothKingsAlive(self):
+        """ check if both kings are still alive """
+        cols, rows = self.grid.shape
+        whiteKingAlive, blackKingAlive = False, False
+
+        for i in range(rows):
+            for j in range(cols):
+                if self.grid[i, j] and isinstance(self.grid[i, j], King):
+                    if self.grid[i, j].color == "white":
+                        whiteKingAlive = True
+                    else:
+                        blackKingAlive = True
+
+        return whiteKingAlive and blackKingAlive
+
+
     # set specific chess piece to position on board, else return
     def setChessPiece(self, chessPiece, x, y):
         """ set chess piece to specific field """

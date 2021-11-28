@@ -51,6 +51,12 @@ def main():
                     drawMoves = True
                     if selectedField and (x, y) in moves and selectedField.color == turn: # make move if selectedField is chess piece and has player's color              
                         selectedField.moveTo(x, y) # move chess piece to new position
+
+                        # check for wins after every move
+                        if not gameBoard.checkBothKingsAlive():
+                            print("King dead")
+                            #todo: winning screen, restart game
+                        
                         moves = set() # reset moves
                         turn = "white" if turn == "black" else "black" # switch color
                         drawMoves = False
