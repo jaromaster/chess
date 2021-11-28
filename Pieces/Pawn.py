@@ -19,7 +19,6 @@ class Pawn(ChessPiece):
             # two steps above (only on first move)
             if self.inBounds(x, y-2) and self.grid[y-2, x] == None and self.isFirstMove: 
                 moves.append((x, y-2))
-                self.isFirstMove = False
             # above pawn (left) if not empty and enemy chess piece
             if self.inBounds(x-1, y-1) and self.grid[y-1, x-1] and self.grid[y-1, x-1].color != "white": 
                 moves.append((x-1,y-1))
@@ -34,7 +33,6 @@ class Pawn(ChessPiece):
             # two steps below (only on first move)
             if self.inBounds(x, y+2) and self.grid[y+2, x] == None and self.isFirstMove: 
                 moves.append((x, y+2))
-                self.isFirstMove = False
             # below pawn (left) if not empty and enemy chess piece
             if self.inBounds(x-1, y+1) and self.grid[y+1, x-1] and self.grid[y+1, x-1].color == "white": 
                 moves.append((x-1,y+1))
@@ -43,3 +41,13 @@ class Pawn(ChessPiece):
                 moves.append((x+1, y+1))
 
         return moves
+    
+    # modify moveTo method from ChessPiece to set isFirstMove
+    def moveTo(self, x, y):
+        """ move chess piece to new position """
+        self.isFirstMove = False
+        temp_pos = (x, y)
+        self.grid[y, x] = self # set to new position
+        x,y = self.pos
+        self.grid[y, x] = None # clear old position
+        self.pos = temp_pos # update own position
