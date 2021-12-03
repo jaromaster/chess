@@ -8,6 +8,7 @@ class ChessPiece:
         self.grid = grid
         self.pos = pos
         self.screen = screen
+        self.hasMoved = False
 
         # load and transform image
         self.image = image
@@ -39,6 +40,7 @@ class ChessPiece:
 
     def moveTo(self, x, y):
         """ move chess piece to new position """
+        self.hasMoved = True
         temp_pos = (x, y)
         self.grid[y, x] = self # set to new position
         x,y = self.pos

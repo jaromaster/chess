@@ -4,7 +4,6 @@ class Pawn(ChessPiece):
     """ Pawn is the least powerful chess piece """
     def __init__(self, color, grid, pos, screen, image):
         super().__init__(color, grid, pos, screen, image)
-        self.isFirstMove = True
 
     # checks for friendly chess pieces and enemy chess pieces
     def validMoves(self):
@@ -16,9 +15,9 @@ class Pawn(ChessPiece):
             # directly above pawn if empty
             if self.inBounds(x, y-1) and self.grid[y-1, x] == None: 
                 moves.append((x, y-1))
-            # two steps above (only on first move)
-            if self.inBounds(x, y-2) and self.grid[y-2, x] == None and self.isFirstMove: 
-                moves.append((x, y-2))
+                # two steps above (only on first move)
+                if self.inBounds(x, y-2) and self.grid[y-2, x] == None and not self.hasMoved: 
+                    moves.append((x, y-2))
             # above pawn (left) if not empty and enemy chess piece
             if self.inBounds(x-1, y-1) and self.grid[y-1, x-1] and self.grid[y-1, x-1].color != "white": 
                 moves.append((x-1,y-1))
@@ -30,9 +29,9 @@ class Pawn(ChessPiece):
             # directly below pawn if empty
             if self.inBounds(x, y+1) and self.grid[y+1, x] == None: 
                 moves.append((x, y+1))
-            # two steps below (only on first move)
-            if self.inBounds(x, y+2) and self.grid[y+2, x] == None and self.isFirstMove: 
-                moves.append((x, y+2))
+                # two steps below (only on first move)
+                if self.inBounds(x, y+2) and self.grid[y+2, x] == None and not self.hasMoved: 
+                    moves.append((x, y+2))
             # below pawn (left) if not empty and enemy chess piece
             if self.inBounds(x-1, y+1) and self.grid[y+1, x-1] and self.grid[y+1, x-1].color == "white": 
                 moves.append((x-1,y+1))
@@ -42,12 +41,3 @@ class Pawn(ChessPiece):
 
         return moves
     
-    # modify moveTo method from ChessPiece to set isFirstMove
-    def moveTo(self, x, y):
-        """ move chess piece to new position """
-        self.isFirstMove = False
-        temp_pos = (x, y)
-        self.grid[y, x] = self # set to new position
-        x,y = self.pos
-        self.grid[y, x] = None # clear old position
-        self.pos = temp_pos # update own position
