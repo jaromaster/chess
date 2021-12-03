@@ -72,7 +72,7 @@ def main():
                         moves = set(selectedField.validMoves()) if selectedField else set()
                         gameBoard.highlightMoves(moves)
 
-        time.sleep(0.001) # delay
+        time.sleep(0.01) # delay
 
 if __name__ == "__main__":
     main()
