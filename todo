@@ -1,6 +1,5 @@
-check if check or checkmate
+check if checkmate
 check for win
 restart game (button or key input)
 implement chess piece switch (if pawn reaches other side)
-implement castling
 optimize design (images, overall look)

@@ -127,10 +127,10 @@ class Board:
         kingImagePath = "Assets/king_white.png"
         imageWhite = pygame.image.load(kingImagePath).convert_alpha()
         imageWhite = pygame.transform.scale(imageWhite, (imgSize[0],imgSize[1]-10)) # image is too high
-        knight = King("black", self.grid, (4,0), self.screen, imageBlack)
-        self.setChessPiece(knight, 4, 0)
-        knight = King("white", self.grid, (4,7), self.screen, imageWhite)
-        self.setChessPiece(knight, 4, 7)
+        king = King("black", self.grid, (4,0), self.screen, imageBlack)
+        self.setChessPiece(king, 4, 0)
+        king = King("white", self.grid, (4,7), self.screen, imageWhite)
+        self.setChessPiece(king, 4, 7)
 
     def checkBothKingsAlive(self):
         """ check if both kings are still alive """

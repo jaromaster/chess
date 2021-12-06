@@ -1,4 +1,5 @@
 from Pieces.ChessPiece import ChessPiece
+from Pieces.Pawn import Pawn
 from Pieces.Rook import Rook
 
 #todo: check for checks when castling
@@ -7,11 +8,25 @@ class King(ChessPiece):
     def __init__(self, color, grid, pos, screen, image):
         super().__init__(color, grid, pos, screen, image)
 
-    def validMoves(self):
-        """ validMoves returns an array of all possible moves """
+    def checkPosUnderAttack(self, x, y, color):
+        """ check if given position can be attacked by chess pieces """
+        for i in range(len(self.grid)):
+            for j in range(len(self.grid[0])):
+                if self.grid[i, j] and self.grid[i, j].color == color:
+                    if isinstance(self.grid[i, j], Pawn) or isinstance(self.grid[i, j], King): # if pawn, not all moves are attacks (directly moving forward), if king, castling is no attack
+                        if (x,y) in self.grid[i, j].attackMoves():
+                            return True
 
+                    
+                    elif (x,y) in self.grid[i, j].validMoves():
+                        return True
+
+        return False
+
+    def attackMoves(self):
+        """ all moves used for attacking chess pieces """
         moves = []
-        x,y = self.pos[0], self.pos[1]
+        x,y = self.pos[0], self.pos[1] # x: col, y: row
 
         # positions above king
         if self.inBounds(x, y-1):
@@ -43,53 +58,84 @@ class King(ChessPiece):
             if self.grid[y, x-1] and self.grid[y, x-1].color != self.color or self.grid[y, x-1] == None:
                 moves.append((x-1, y))
 
+        return moves
+
+    def validMoves(self):
+        """ validMoves returns an array of all possible moves """
+        moves = []
+        x,y = self.pos[0], self.pos[1]
+        moves = self.attackMoves()
+
         # castling
         # https://www.chess.com/article/view/how-to-castle-in-chess
-        if not self.hasMoved:
-            if self.color == "white":
-                # left
-                # check if fields between king and rook are empty
-                if not self.grid[7, 1] and not self.grid[7, 2] and not self.grid[7, 3]:
-                    # check if king not in check
+        
+        # check if king not in check
+        enemyColor = "white" if self.color == "black" else "black"
+        if self.checkPosUnderAttack(self.pos[0], self.pos[1], enemyColor):
+            print("King with color", self.color, "is in check!") # testing
+            return moves
 
-                    # check if king passes check when castling
+        if self.hasMoved:
+            print("King has moved")
+            return moves
 
-                    # check if rook has not moved
-                    if self.grid[7, 0] and isinstance(self.grid[7, 0], Rook) and not self.grid[7, 0].hasMoved:
-                        moves.append((0, 7))
-                      
-                # right
-                # check if fields between king and rook are empty
-                if not self.grid[7, 5] and not self.grid[7, 6]:
-                    # check if king not in check
+        castlingPossible = True
+        if self.color == "white":
+            # left
+            # check if all fields between king and rook are empty
+            if self.grid[7, 1] or self.grid[7, 2] or self.grid[7, 3]:
+                castlingPossible = False 
+            # check if king passes check when castling
+            elif self.checkPosUnderAttack(1, 7, enemyColor) or self.checkPosUnderAttack(2, 7, enemyColor) or self.checkPosUnderAttack(3, 7, enemyColor):
+                castlingPossible = False 
+            # check if rook has moved
+            elif not self.grid[7, 0] or not isinstance(self.grid[7, 0], Rook) or self.grid[7, 0].hasMoved:
+                castlingPossible = False 
+            
+            if castlingPossible:
+                moves.append((0, 7)) # if none of above is true, castling is valid
+            castlingPossible = True      
+            # right
+            # check if all fields between king and rook are empty
+            if self.grid[7, 5] or self.grid[7, 6]:
+                castlingPossible = False 
+            # check if king passes check when castling
+            elif self.checkPosUnderAttack(5, 7, enemyColor) or self.checkPosUnderAttack(6, 7, enemyColor):
+                castlingPossible = False 
+            # check if rook has moved
+            elif not self.grid[7, 7] or not isinstance(self.grid[7, 7], Rook) or self.grid[7, 7].hasMoved:
+                castlingPossible = False 
 
-                    # check if king passes check when castling
+            if castlingPossible:
+                moves.append((7, 7))
+        else:
+            # left
+            # check if all fields between king and rook are empty
+            if self.grid[0, 1] or self.grid[0, 2] or self.grid[0, 3]:
+                castlingPossible = False 
+            # check if king passes check when castling
+            if self.checkPosUnderAttack(1, 0, enemyColor) or self.checkPosUnderAttack(2, 0, enemyColor) or self.checkPosUnderAttack(3, 0, enemyColor):
+                castlingPossible = False 
+            # check if rook has moved
+            if not self.grid[0, 0] or not isinstance(self.grid[0, 0], Rook) or self.grid[0, 0].hasMoved:
+                castlingPossible = False 
+            
+            if castlingPossible:
+                moves.append((0, 0)) # if none of above is true, castling is valid
+            castlingPossible = True
+            # right
+            # check if all fields between king and rook are empty
+            if self.grid[0, 5] or self.grid[0, 6]:
+                castlingPossible = False 
+            # check if king passes check when castling
+            if self.checkPosUnderAttack(5, 0, enemyColor) or self.checkPosUnderAttack(6, 0, enemyColor):
+                castlingPossible = False 
+            # check if rook has moved
+            if not self.grid[0, 7] or not isinstance(self.grid[0, 7], Rook) or self.grid[0, 7].hasMoved:
+                castlingPossible = False 
 
-                    # check if rook has not moved
-                    if self.grid[7, 7] and isinstance(self.grid[7, 7], Rook) and not self.grid[7, 7].hasMoved:
-                        moves.append((7, 7))
-            else:
-                # left
-                # check if fields between king and rook are empty
-                if not self.grid[0, 1] and not self.grid[0, 2] and not self.grid[0, 3]:
-                    # check if king not in check
-
-                    # check if king passes check when castling
-                    
-                    # check if rook has not moved
-                    if self.grid[0, 0] and isinstance(self.grid[0, 0], Rook) and not self.grid[0, 0].hasMoved:
-                        moves.append((0, 0))
-
-                # right
-                # check if fields between king and rook are empty
-                if not self.grid[0, 5] and not self.grid[0, 6]:
-                    # check if king not in check
-
-                    # check if king passes check when castling
-
-                    # check if rook has not moved
-                    if self.grid[0, 7] and isinstance(self.grid[0, 7], Rook) and not self.grid[0, 7].hasMoved:
-                        moves.append((7, 0))
+            if castlingPossible:
+                moves.append((7, 0))
 
         return moves
 
@@ -105,7 +151,7 @@ class King(ChessPiece):
 
 
     def moveTo(self, x, y):
-        """ move king and handle castling """
+        """ move king (and handle castling) """
         # castling
         if self.grid[y, x] and isinstance(self.grid[y, x], Rook) and self.grid[y, x].color == self.color and not self.hasMoved:
             # check if rook is left or right
