@@ -63,7 +63,6 @@ class King(ChessPiece):
     def validMoves(self):
         """ validMoves returns an array of all possible moves """
         moves = []
-        x,y = self.pos[0], self.pos[1]
         moves = self.attackMoves()
 
         # castling
@@ -72,11 +71,9 @@ class King(ChessPiece):
         # check if king not in check
         enemyColor = "white" if self.color == "black" else "black"
         if self.checkPosUnderAttack(self.pos[0], self.pos[1], enemyColor):
-            print("King with color", self.color, "is in check!") # testing
             return moves
 
         if self.hasMoved:
-            print("King has moved")
             return moves
 
         castlingPossible = True

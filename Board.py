@@ -10,8 +10,7 @@ from Pieces.Rook import Rook
 class Board:
     """ Board is the chess board containing all the chess pieces """
     def __init__(self, squareLength, squareColor, screen):
-        numRows, numCols = 8, 8
-        self.grid = np.empty((numRows, numCols), dtype="object")
+        self.grid = np.empty((8, 8), dtype="object") # 8x8 array to store chess pieces
         self.gridColors = []
         self.screen = screen
         # side length of the squares

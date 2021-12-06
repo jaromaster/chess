@@ -8,7 +8,6 @@ def initWindow(width, height, title, color) -> pygame.Surface:
     screen = pygame.display.set_mode((width, height))
     pygame.display.set_caption(title)
     screen.fill(color)
-    pygame.display.flip()
 
     return screen
 
@@ -24,9 +23,9 @@ def main():
     screen = initWindow(width, height, title, background_color) 
     
     # game board
-    gameBoard = Board(squareLength, squareColor, screen) # 8x8 board
+    gameBoard = Board(squareLength, squareColor, screen)
     gameBoard.drawGrid()
-    gameBoard.drawChessPieces() # draw all chess pieces on grid
+    gameBoard.drawChessPieces()
 
     isRunning = True
     selectedField = None
@@ -72,7 +71,7 @@ def main():
                         moves = set(selectedField.validMoves()) if selectedField else set()
                         gameBoard.highlightMoves(moves)
 
-        time.sleep(0.01) # delay
+        time.sleep(0.001) # delay
 
 if __name__ == "__main__":
     main()
