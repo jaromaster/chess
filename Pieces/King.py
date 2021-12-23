@@ -24,7 +24,7 @@ class King(ChessPiece):
         return False
 
     def attackMoves(self):
-        """ all moves used for attacking chess pieces """
+        """ all moves that can be used for attacking chess pieces """
         moves = []
         x,y = self.pos[0], self.pos[1] # x: col, y: row
 
