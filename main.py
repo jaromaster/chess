@@ -14,10 +14,14 @@ def initWindow(width, height, title, color) -> pygame.Surface:
 # main function
 def main():
     """ main function contains all the game logic """
+    pygame.init()
     width, height, title = 1000, 800, "Chess"
     background_color = (255, 255, 255)
-    squareLength = 80
     squareColor = (111, 73, 73)
+    squareLength = 80
+    fontSize = 30
+    font = pygame.font.Font("freesansbold.ttf", fontSize)
+    
     
     # initialize game window
     screen = initWindow(width, height, title, background_color) 
@@ -52,10 +56,23 @@ def main():
                         selectedField.moveTo(x, y) # move chess piece to new position
 
                         # check for wins after every move
-                        if not gameBoard.checkBothKingsAlive():
-                            print("King dead")
-                            #todo: winning screen, restart game
-                        
+                        bothAlive, colorDead = gameBoard.checkBothKingsAlive()
+                        if not bothAlive:
+                            print("King dead") # testing
+
+
+                            # display winner text
+                            color = "black" if colorDead == "white" else "white"
+                            winnerText = font.render("Player "+color+" won", True, (0,0,0), (255,255,255))
+                            winnerTextRect = winnerText.get_rect()
+                            winnerTextRect.centerx = width // 2
+                            winnerTextRect.centery = fontSize
+                            screen.blit(winnerText, winnerTextRect)
+                            pygame.display.update()
+
+                            #todo: restart button
+                            #todo: restart game on button click
+
                         moves = set() # reset moves
                         turn = "white" if turn == "black" else "black" # switch color
                         drawMoves = False

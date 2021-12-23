@@ -13,7 +13,6 @@ class Board:
         self.grid = np.empty((8, 8), dtype="object") # 8x8 array to store chess pieces
         self.gridColors = []
         self.screen = screen
-        self.kingWhite, self.kingBlack = None, None # for fast access
         # side length of the squares
         self.squareLength = squareLength
 
@@ -128,14 +127,12 @@ class Board:
         imageWhite = pygame.image.load(kingImagePath).convert_alpha()
         imageWhite = pygame.transform.scale(imageWhite, (imgSize[0],imgSize[1]-10)) # image is too high
         king = King("black", self.grid, (4,0), self.screen, imageBlack)
-        self.kingBlack = king
         self.setChessPiece(king, 4, 0)
-        king2 = King("white", self.grid, (4,7), self.screen, imageWhite)
-        self.kingWhite = king2
-        self.setChessPiece(king2, 4, 7)
+        king = King("white", self.grid, (4,7), self.screen, imageWhite)
+        self.setChessPiece(king, 4, 7)
 
     def checkBothKingsAlive(self):
-        """ check if both kings are still alive """
+        """ check if both kings are still alive, return boolean + color of dead king """
         cols, rows = self.grid.shape
         whiteKingAlive, blackKingAlive = False, False
 
@@ -147,7 +144,13 @@ class Board:
                     else:
                         blackKingAlive = True
 
-        return whiteKingAlive and blackKingAlive
+        if whiteKingAlive and blackKingAlive:
+            return (True, None)
+        elif whiteKingAlive:
+            return (False, "black")
+        elif blackKingAlive:
+            return (False, "white")
+
 
     # set specific chess piece to position on board, else return
     def setChessPiece(self, chessPiece, x, y):
