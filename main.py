@@ -95,16 +95,12 @@ def main():
                         x,y = v
 
                         if x < mouseX < x + squareLength and y < mouseY < y + squareLength: # if mouse in field
-                            # change pawn to selected chess piece
-                            print(k)
-
-                            selectPositions = dict()
-                            gameBoard.promote(promotionPawnPos, k)
+                            selectPositions = dict() # reset selectPositions
+                            gameBoard.promote(promotionPawnPos, k) # replace pawn with new chess piece
                             break
 
-
                 # if selected square in grid, update selectedField
-                if gameBoard.inBounds(mouseCol, mouseRow):
+                elif gameBoard.inBounds(mouseCol, mouseRow):
                     # if player wants to move chess piece
                     x,y = mouseCol, mouseRow
                     drawMoves = True

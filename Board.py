@@ -16,6 +16,9 @@ class Board:
         # side length of the squares
         self.squareLength = squareLength
 
+        # side length of images
+        self.imgSize = (self.squareLength - 5, self.squareLength - 5)
+
         # color of non-white squares
         self.squareColor = squareColor
         self.highlightColor = (0, 200, 0)
@@ -38,17 +41,15 @@ class Board:
     # only called once on start of new game
     def initChessPieces(self):
         """ place all chess pieces at their starting positions """
-        
-        imgSize = (self.squareLength - 5, self.squareLength - 5)
         self.grid = np.empty((8, 8), dtype="object") # create empty grid
 
         # create and place all pawns
         pawnImagePath = "Assets/pawn_black.png"
         imageBlack = pygame.image.load(pawnImagePath).convert_alpha()
-        imageBlack = pygame.transform.scale(imageBlack, imgSize)
+        imageBlack = pygame.transform.scale(imageBlack, self.imgSize)
         pawnImagePath = "Assets/pawn_white.png"
         imageWhite = pygame.image.load(pawnImagePath).convert_alpha()
-        imageWhite = pygame.transform.scale(imageWhite, imgSize)
+        imageWhite = pygame.transform.scale(imageWhite, self.imgSize)
         width = len(self.grid[0])
         for col in range(width):
             pawn = Pawn("black", self.grid, (col, 1), self.screen, imageBlack)
@@ -58,75 +59,75 @@ class Board:
             self.setChessPiece(pawn, col, 6)
 
         # create and place all rooks
-        # rookImagePath = "Assets/rook_black.png"
-        # imageBlack = pygame.image.load(rookImagePath).convert_alpha()
-        # imageBlack = pygame.transform.scale(imageBlack, imgSize)
-        # rookImagePath = "Assets/rook_white.png"
-        # imageWhite = pygame.image.load(rookImagePath).convert_alpha()
-        # imageWhite = pygame.transform.scale(imageWhite, imgSize)
-        # rook = Rook("black", self.grid, (0, 0), self.screen, imageBlack)
-        # self.setChessPiece(rook, 0, 0)
-        # rook = Rook("black", self.grid, (7, 0), self.screen, imageBlack)
-        # self.setChessPiece(rook, 7, 0)
+        rookImagePath = "Assets/rook_black.png"
+        imageBlack = pygame.image.load(rookImagePath).convert_alpha()
+        imageBlack = pygame.transform.scale(imageBlack, self.imgSize)
+        rookImagePath = "Assets/rook_white.png"
+        imageWhite = pygame.image.load(rookImagePath).convert_alpha()
+        imageWhite = pygame.transform.scale(imageWhite, self.imgSize)
+        rook = Rook("black", self.grid, (0, 0), self.screen, imageBlack)
+        self.setChessPiece(rook, 0, 0)
+        rook = Rook("black", self.grid, (7, 0), self.screen, imageBlack)
+        self.setChessPiece(rook, 7, 0)
 
-        # rook = Rook("white", self.grid, (0, 7), self.screen, imageWhite)
-        # self.setChessPiece(rook, 0, 7)
-        # rook = Rook("white", self.grid, (7, 7), self.screen, imageWhite)
-        # self.setChessPiece(rook, 7, 7)
+        rook = Rook("white", self.grid, (0, 7), self.screen, imageWhite)
+        self.setChessPiece(rook, 0, 7)
+        rook = Rook("white", self.grid, (7, 7), self.screen, imageWhite)
+        self.setChessPiece(rook, 7, 7)
 
         # create and place all bishops
-        # bishopImagePath = "Assets/bishop_black.png"
-        # imageBlack = pygame.image.load(bishopImagePath).convert_alpha()
-        # imageBlack = pygame.transform.scale(imageBlack, imgSize)
-        # bishopImagePath = "Assets/bishop_white.png"
-        # imageWhite = pygame.image.load(bishopImagePath).convert_alpha()
-        # imageWhite = pygame.transform.scale(imageWhite, imgSize)
-        # bishop = Bishop("black", self.grid, (2, 0), self.screen, imageBlack)
-        # self.setChessPiece(bishop, 2, 0)
-        # bishop = Bishop("black", self.grid, (5, 0), self.screen, imageBlack)
-        # self.setChessPiece(bishop, 5, 0)
+        bishopImagePath = "Assets/bishop_black.png"
+        imageBlack = pygame.image.load(bishopImagePath).convert_alpha()
+        imageBlack = pygame.transform.scale(imageBlack, self.imgSize)
+        bishopImagePath = "Assets/bishop_white.png"
+        imageWhite = pygame.image.load(bishopImagePath).convert_alpha()
+        imageWhite = pygame.transform.scale(imageWhite, self.imgSize)
+        bishop = Bishop("black", self.grid, (2, 0), self.screen, imageBlack)
+        self.setChessPiece(bishop, 2, 0)
+        bishop = Bishop("black", self.grid, (5, 0), self.screen, imageBlack)
+        self.setChessPiece(bishop, 5, 0)
 
-        # bishop = Bishop("white", self.grid, (2, 7), self.screen, imageWhite)
-        # self.setChessPiece(bishop, 2, 7)
-        # bishop = Bishop("white", self.grid, (5, 7), self.screen, imageWhite)
-        # self.setChessPiece(bishop, 5, 7)
+        bishop = Bishop("white", self.grid, (2, 7), self.screen, imageWhite)
+        self.setChessPiece(bishop, 2, 7)
+        bishop = Bishop("white", self.grid, (5, 7), self.screen, imageWhite)
+        self.setChessPiece(bishop, 5, 7)
 
         # create and place all queens
         queenImagePath = "Assets/queen_black.png"
         imageBlack = pygame.image.load(queenImagePath).convert_alpha()
-        imageBlack = pygame.transform.scale(imageBlack, imgSize)
+        imageBlack = pygame.transform.scale(imageBlack, self.imgSize)
         queenImagePath = "Assets/queen_white.png"
         imageWhite = pygame.image.load(queenImagePath).convert_alpha()
-        imageWhite = pygame.transform.scale(imageWhite, imgSize)
+        imageWhite = pygame.transform.scale(imageWhite, self.imgSize)
         queen = Queen("black", self.grid, (3, 0), self.screen, imageBlack)
         self.setChessPiece(queen, 3, 0)
         queen = Queen("white", self.grid, (3, 7), self.screen, imageWhite)
         self.setChessPiece(queen, 3, 7)
 
         # create and place all knights
-        # knightImagePath = "Assets/knight_black.png"
-        # imageBlack = pygame.image.load(knightImagePath).convert_alpha()
-        # imageBlack = pygame.transform.scale(imageBlack, imgSize)
-        # knightImagePath = "Assets/knight_white.png"
-        # imageWhite = pygame.image.load(knightImagePath).convert_alpha()
-        # imageWhite = pygame.transform.scale(imageWhite, imgSize)
-        # knight = Knight("black", self.grid, (1,0), self.screen, imageBlack)
-        # self.setChessPiece(knight, 1, 0)
-        # knight = Knight("black", self.grid, (6,0), self.screen, imageBlack)
-        # self.setChessPiece(knight, 6, 0)
+        knightImagePath = "Assets/knight_black.png"
+        imageBlack = pygame.image.load(knightImagePath).convert_alpha()
+        imageBlack = pygame.transform.scale(imageBlack, self.imgSize)
+        knightImagePath = "Assets/knight_white.png"
+        imageWhite = pygame.image.load(knightImagePath).convert_alpha()
+        imageWhite = pygame.transform.scale(imageWhite, self.imgSize)
+        knight = Knight("black", self.grid, (1,0), self.screen, imageBlack)
+        self.setChessPiece(knight, 1, 0)
+        knight = Knight("black", self.grid, (6,0), self.screen, imageBlack)
+        self.setChessPiece(knight, 6, 0)
 
-        # knight = Knight("white", self.grid, (1,7), self.screen, imageWhite)
-        # self.setChessPiece(knight, 1, 7)
-        # knight = Knight("white", self.grid, (6,7), self.screen, imageWhite)
-        # self.setChessPiece(knight, 6, 7)
+        knight = Knight("white", self.grid, (1,7), self.screen, imageWhite)
+        self.setChessPiece(knight, 1, 7)
+        knight = Knight("white", self.grid, (6,7), self.screen, imageWhite)
+        self.setChessPiece(knight, 6, 7)
 
         # place the two kings
         kingImagePath = "Assets/king_black.png"
         imageBlack = pygame.image.load(kingImagePath).convert_alpha()
-        imageBlack = pygame.transform.scale(imageBlack, (imgSize[0],imgSize[1]-10)) # image is too high
+        imageBlack = pygame.transform.scale(imageBlack, (self.imgSize[0],self.imgSize[1]-10)) # image is too high
         kingImagePath = "Assets/king_white.png"
         imageWhite = pygame.image.load(kingImagePath).convert_alpha()
-        imageWhite = pygame.transform.scale(imageWhite, (imgSize[0],imgSize[1]-10)) # image is too high
+        imageWhite = pygame.transform.scale(imageWhite, (self.imgSize[0],self.imgSize[1]-10)) # image is too high
         king = King("black", self.grid, (4,0), self.screen, imageBlack)
         self.setChessPiece(king, 4, 0)
         king = King("white", self.grid, (4,7), self.screen, imageWhite)
@@ -243,18 +244,18 @@ class Board:
 
 
     def selectAble(self, color):
-        """ get all chess pieces for promotion """
+        """ get all chess pieces for promotion (all except pawn and king) """
 
         return ["bishop_"+color, "knight_"+color, "queen_"+color, "rook_"+color]
 
-    def promote(self, pawnPos, pieceName):
+    def promote(self, pawnPos, pieceNameColor):
         """ promote pawn at pos (x,y) to new chess piece (pieceName = name_color) """
 
         if None in pawnPos:
             print("pawnPos contains None")
             return
 
-        piece, color = pieceName.split("_")
+        piece, color = pieceNameColor.split("_")
         # print("pawnPos", pawnPos)
         # print("piece", piece)
         # print("color", color)
