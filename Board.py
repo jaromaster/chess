@@ -40,6 +40,7 @@ class Board:
         """ place all chess pieces at their starting positions """
         
         imgSize = (self.squareLength - 5, self.squareLength - 5)
+        self.grid = np.empty((8, 8), dtype="object") # create empty grid
 
         # create and place all pawns
         pawnImagePath = "Assets/pawn_black.png"

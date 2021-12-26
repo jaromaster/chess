@@ -11,6 +11,14 @@ def initWindow(width, height, title, color) -> pygame.Surface:
 
     return screen
 
+def writeText(string, xCenter, yCenter, font, screen):
+    """ draw text to canvas, call pygame.display.update() to update screen """
+    winnerText = font.render(string, True, (0,0,0), (255,255,255)) # tuples are colors of text and background
+    winnerTextRect = winnerText.get_rect()
+    winnerTextRect.centerx = xCenter
+    winnerTextRect.centery = yCenter
+    screen.blit(winnerText, winnerTextRect)
+
 # main function
 def main():
     """ main function contains all the game logic """
@@ -37,11 +45,18 @@ def main():
     mouseCol, mouseRow = 0, 0
     moves = set() # possible moves of selected chess piece
     # game loop
-    pygame.event.set_allowed([pygame.QUIT, pygame.MOUSEBUTTONDOWN])
+    pygame.event.set_allowed([pygame.QUIT, pygame.MOUSEBUTTONDOWN, pygame.KEYDOWN])
     while isRunning:
         for event in pygame.event.get():
             if event.type == pygame.QUIT: # break if quit event occurred
                 isRunning = False
+
+            elif event.type == pygame.KEYDOWN: # restart game by pressing space
+                if event.key == pygame.K_SPACE:
+                    gameBoard.drawGrid()
+                    gameBoard.initChessPieces()
+                    gameBoard.drawChessPieces()
+                    print("redrawn") # testing
 
             elif event.type == pygame.MOUSEBUTTONDOWN: # user clicked
                 # convert coordinates of mouse to rows and columns of grid
@@ -63,11 +78,7 @@ def main():
 
                             # display winner text
                             color = "black" if colorDead == "white" else "white"
-                            winnerText = font.render("Player "+color+" won", True, (0,0,0), (255,255,255))
-                            winnerTextRect = winnerText.get_rect()
-                            winnerTextRect.centerx = width // 2
-                            winnerTextRect.centery = fontSize
-                            screen.blit(winnerText, winnerTextRect)
+                            writeText("Player "+color+" won", width // 2, fontSize, font, screen)
                             pygame.display.update()
 
                             #todo: restart button
