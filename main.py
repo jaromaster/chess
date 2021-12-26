@@ -20,6 +20,25 @@ def writeText(string, xCenter, yCenter, font, screen):
     winnerTextRect.centery = yCenter
     screen.blit(winnerText, winnerTextRect)
 
+# draw images of selectable chess pieces
+def drawSelection(selectPositions, squareLength, screen):
+    """ draw images of chess pieces """
+    imgSize = (squareLength - 5, squareLength - 5)
+
+    for k, v in selectPositions.items():
+        x,y = v
+
+        imagePath = f"Assets/{k}.png"
+        image = pygame.image.load(imagePath).convert_alpha()
+        image = pygame.transform.scale(image, imgSize)
+        imageRect = image.get_rect()
+        imageRect.x = x
+        imageRect.y = y
+
+        screen.blit(image, imageRect)
+
+    pygame.display.update()
+
 # main function
 def main():
     """ main function contains all the game logic """
@@ -45,6 +64,8 @@ def main():
     mouseCol, mouseRow = 0, 0
     moves = set() # possible moves of selected chess piece
     won = False # disable clicking if player won
+    selectPositions = dict()
+    promotionPawnPos = (None, None) # position of pawn, that reached other side of board
     # game loop
     pygame.event.set_allowed([pygame.QUIT, pygame.MOUSEBUTTONDOWN, pygame.KEYDOWN])
     while isRunning:
@@ -66,6 +87,22 @@ def main():
                 # convert coordinates of mouse to rows and columns of grid
                 mouseCol = int((pygame.mouse.get_pos()[0] - gameBoard.xStart) // squareLength)
                 mouseRow = int((pygame.mouse.get_pos()[1] - gameBoard.yStart) // squareLength)
+
+                # check if user selected selectable chess piece
+                if selectPositions: 
+                    mouseX, mouseY = pygame.mouse.get_pos()
+                    for k, v in selectPositions.items():
+                        x,y = v
+
+                        if x < mouseX < x + squareLength and y < mouseY < y + squareLength: # if mouse in field
+                            # change pawn to selected chess piece
+                            print(k)
+
+                            selectPositions = dict()
+                            gameBoard.promote(promotionPawnPos, k)
+                            break
+
+
                 # if selected square in grid, update selectedField
                 if gameBoard.inBounds(mouseCol, mouseRow):
                     # if player wants to move chess piece
@@ -78,7 +115,6 @@ def main():
                         bothAlive, colorDead = gameBoard.checkBothKingsAlive()
                         if not bothAlive: # if king dead
                             won = True
-
                             # display winner text
                             textFieldHeight = (height - 8*squareLength) // 2 # center text vertically in area outside grid
                             color = "black" if colorDead == "white" else "white"
@@ -86,6 +122,22 @@ def main():
                             # display text explaining how to restart
                             writeText("Press SPACE to restart", width // 2, height - textFieldHeight // 2, font, screen)
                             pygame.display.update()
+
+                        # if pawn reached other side of board
+                        reachedEnd, pawnPos = gameBoard.checkPawnReachedEnd()
+                        if reachedEnd:
+                            selectAble = gameBoard.selectAble(gameBoard.grid[pawnPos[1]][pawnPos[0]].color) # get valid chess pieces
+                            promotionPawnPos = pawnPos
+
+                            # store positions of selectable pieces to handle mouse input
+                            gridSize = 8 * squareLength
+                            x = (width - gridSize) // 2 + gridSize
+                            y = (height - gridSize) // 2
+                            for piece in selectAble:
+                                selectPositions[piece] = (x, y)
+                                y += squareLength
+
+                            drawSelection(selectPositions, squareLength, screen)
 
                         moves = set() # reset moves
                         turn = "white" if turn == "black" else "black" # switch color

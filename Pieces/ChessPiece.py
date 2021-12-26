@@ -21,16 +21,6 @@ class ChessPiece:
         gridWidth, gridHeight = self.grid.shape
         return (x >= 0 and y >= 0 and x < gridWidth and y < gridHeight)
 
-    # for testing: draw circle
-    # planned: image of chess piece
-    def draw(self, drawPos, radius):
-        """ draw chess piece """
-        color = self.color
-        if self.color == "white":
-            color = (200, 200, 200)
-
-        pygame.draw.circle(self.screen, color, drawPos, radius)    
-
     def drawImage(self, drawPos, imageWidth):
         """ draw image of chess piece """
         self.imageRect.x = drawPos[0] - imageWidth / 2
