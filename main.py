@@ -21,16 +21,14 @@ def writeText(string, xCenter, yCenter, font, screen):
     screen.blit(winnerText, winnerTextRect)
 
 # draw images of selectable chess pieces
-def drawSelection(selectPositions, squareLength, screen):
+def drawSelection(selectPositions, screen):
     """ draw images of chess pieces """
-    imgSize = (squareLength - 5, squareLength - 5)
 
     for k, v in selectPositions.items():
         x,y = v
 
         imagePath = f"Assets/{k}.png"
         image = pygame.image.load(imagePath).convert_alpha()
-        image = pygame.transform.scale(image, imgSize)
         imageRect = image.get_rect()
         imageRect.x = x
         imageRect.y = y
@@ -133,7 +131,7 @@ def main():
                                 selectPositions[piece] = (x, y)
                                 y += squareLength
 
-                            drawSelection(selectPositions, squareLength, screen)
+                            drawSelection(selectPositions, screen)
 
                         moves = set() # reset moves
                         turn = "white" if turn == "black" else "black" # switch color

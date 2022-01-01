@@ -46,10 +46,8 @@ class Board:
         # create and place all pawns
         pawnImagePath = "Assets/pawn_black.png"
         imageBlack = pygame.image.load(pawnImagePath).convert_alpha()
-        imageBlack = pygame.transform.scale(imageBlack, self.imgSize)
         pawnImagePath = "Assets/pawn_white.png"
         imageWhite = pygame.image.load(pawnImagePath).convert_alpha()
-        imageWhite = pygame.transform.scale(imageWhite, self.imgSize)
         width = len(self.grid[0])
         for col in range(width):
             pawn = Pawn("black", self.grid, (col, 1), self.screen, imageBlack)
@@ -61,10 +59,8 @@ class Board:
         # create and place all rooks
         rookImagePath = "Assets/rook_black.png"
         imageBlack = pygame.image.load(rookImagePath).convert_alpha()
-        imageBlack = pygame.transform.scale(imageBlack, self.imgSize)
         rookImagePath = "Assets/rook_white.png"
         imageWhite = pygame.image.load(rookImagePath).convert_alpha()
-        imageWhite = pygame.transform.scale(imageWhite, self.imgSize)
         rook = Rook("black", self.grid, (0, 0), self.screen, imageBlack)
         self.setChessPiece(rook, 0, 0)
         rook = Rook("black", self.grid, (7, 0), self.screen, imageBlack)
@@ -78,10 +74,8 @@ class Board:
         # create and place all bishops
         bishopImagePath = "Assets/bishop_black.png"
         imageBlack = pygame.image.load(bishopImagePath).convert_alpha()
-        imageBlack = pygame.transform.scale(imageBlack, self.imgSize)
         bishopImagePath = "Assets/bishop_white.png"
         imageWhite = pygame.image.load(bishopImagePath).convert_alpha()
-        imageWhite = pygame.transform.scale(imageWhite, self.imgSize)
         bishop = Bishop("black", self.grid, (2, 0), self.screen, imageBlack)
         self.setChessPiece(bishop, 2, 0)
         bishop = Bishop("black", self.grid, (5, 0), self.screen, imageBlack)
@@ -95,10 +89,8 @@ class Board:
         # create and place all queens
         queenImagePath = "Assets/queen_black.png"
         imageBlack = pygame.image.load(queenImagePath).convert_alpha()
-        imageBlack = pygame.transform.scale(imageBlack, self.imgSize)
         queenImagePath = "Assets/queen_white.png"
         imageWhite = pygame.image.load(queenImagePath).convert_alpha()
-        imageWhite = pygame.transform.scale(imageWhite, self.imgSize)
         queen = Queen("black", self.grid, (3, 0), self.screen, imageBlack)
         self.setChessPiece(queen, 3, 0)
         queen = Queen("white", self.grid, (3, 7), self.screen, imageWhite)
@@ -107,10 +99,8 @@ class Board:
         # create and place all knights
         knightImagePath = "Assets/knight_black.png"
         imageBlack = pygame.image.load(knightImagePath).convert_alpha()
-        imageBlack = pygame.transform.scale(imageBlack, self.imgSize)
         knightImagePath = "Assets/knight_white.png"
         imageWhite = pygame.image.load(knightImagePath).convert_alpha()
-        imageWhite = pygame.transform.scale(imageWhite, self.imgSize)
         knight = Knight("black", self.grid, (1,0), self.screen, imageBlack)
         self.setChessPiece(knight, 1, 0)
         knight = Knight("black", self.grid, (6,0), self.screen, imageBlack)
@@ -256,34 +246,26 @@ class Board:
             return
 
         piece, color = pieceNameColor.split("_")
-        # print("pawnPos", pawnPos)
-        # print("piece", piece)
-        # print("color", color)
 
-        imgSize = (self.squareLength - 5, self.squareLength - 5)
         newPiece = None
         if piece == "queen": # pawn becomes queen
             queenImagePath = f"Assets/queen_{color}.png"
             image = pygame.image.load(queenImagePath).convert_alpha()
-            image = pygame.transform.scale(image, imgSize)
             newPiece = Queen(color, self.grid, pawnPos, self.screen, image)
 
         elif piece == "knight": # pawn becomes knight
             knightImagePath = f"Assets/knight_{color}.png"
             image = pygame.image.load(knightImagePath).convert_alpha()
-            image = pygame.transform.scale(image, imgSize)
             newPiece = Knight(color, self.grid, pawnPos, self.screen, image)
 
         elif piece == "bishop": # pawn becomes bishop
             bishopImagePath = f"Assets/bishop_{color}.png"
             image = pygame.image.load(bishopImagePath).convert_alpha()
-            image = pygame.transform.scale(image, imgSize)
             newPiece = Bishop(color, self.grid, pawnPos, self.screen, image)
 
         elif piece == "rook": # pawn becomes rook
             rookImagePath = f"Assets/rook_{color}.png"
             image = pygame.image.load(rookImagePath).convert_alpha()
-            image = pygame.transform.scale(image, imgSize)
             newPiece = Rook(color, self.grid, pawnPos, self.screen, image)
         
         self.setChessPiece(newPiece, pawnPos[0], pawnPos[1])
